@@ -6,3 +6,6 @@ lib/
 lib64
 bin/
 pyvenv.cfg
+*.egg-info
+*.pyc
+wowlsp.log
