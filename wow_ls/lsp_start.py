@@ -24,30 +24,40 @@ class WoWLanguageServer(MethodDispatcher):
     def m_initialize(self, rootUri, capabilities, **_kwargs):
         log.info("init")
         log.info(capabilities)
+        self._rootUri = rootUri
         return {
             'capabilities': {
                 'positionEncodingKind': 'utf-8',
                 'textDocumentSync': {
                     'change': 1  # Full
                 },
-                # 'documentHighlightProvider': True,
-                'workspace': {
-                    'didChangeWatchedFiles': {
+            },
+            'serverInfo': {
+                'name': 'wow_ls',
+            }
+        }
+
+    def m_initialized(self):
+        self._endpoint.notify('client/registerCapability', {
+            'registrations': [
+                {
+                    'id': "workspace/didChangeWatchedFiles",
+                    'method': "workspace/didChangeWatchedFiles",
+                    'registerOptions': {
                         'watchers': [
                             {
-                                'globPattern': {
-                                    'baseUri': rootUri,
-                                    'pattern': '.wowrc.json'
-                                }
+                                'globPattern': {'baseUri': self._rootUri, 'pattern': '**.toc'},
+                                'kind': 7,
                             }
                         ]
                     }
                 }
-            },
-            'serverInfo': {
-                'name': 'wowlsp',
-            }
-        }
+            ]
+        })
+
+    def m_workspace__did_change_watched_files(self, changes):
+        log.info("change")
+        log.info(changes)
 
     def m_shutdown(self, **_kwargs):
         exit()
