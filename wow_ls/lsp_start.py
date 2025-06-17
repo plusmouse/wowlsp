@@ -34,7 +34,12 @@ class WoWLanguageServer(MethodDispatcher):
                 'workspace': {
                     'didChangeWatchedFiles': {
                         'watchers': [
-                            {'globPattern': '.wowrc.json'}
+                            {
+                                'globPattern': {
+                                    'baseUri': rootUri,
+                                    'pattern': '.wowrc.json'
+                                }
+                            }
                         ]
                     }
                 }

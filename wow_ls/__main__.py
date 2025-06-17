@@ -5,7 +5,7 @@ log = logging.getLogger(__name__)
 
 
 def main():
-    logging.basicConfig(filename='wowlsp.log', level=logging.INFO)
+    logging.basicConfig(filename='wow_ls.log', level=logging.INFO)
     lsp_start.start_stdio_server()
 
 
